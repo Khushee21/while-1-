@@ -5,7 +5,7 @@ const PostAiForInterview = async (req, res) => {
 
   // Place URL and key directly here
   const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1";
-  const HUGGINGFACE_API_KEY = "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";
+  const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
 
   try {
     const response = await axios.post(
