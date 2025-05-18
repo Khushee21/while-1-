@@ -1,7 +1,7 @@
 const LoginFooter = () => {
     return (
-      <div className="bg-black bg-opacity-80  text-white py-6 px-8 rounded-t-xl mt-10 text-sm">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-4">
+      <div className=" bg-black bg-opacity-80  text-white py-8 px-8   text-lg font-poppins">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-10 mb-4">
           <div>
             <h3 className="font-semibold mb-2">Roadmap</h3>
             <p>Follow structured paths to grow in development, design & more.</p>
@@ -28,7 +28,7 @@ const LoginFooter = () => {
           </div>
         </div>
   
-        <div className="border-t pt-3 text-center text-xs text-white">
+        <div className="border-t pt-3 text-center text-sm text-white">
           📧 Contact us at: <a href="mailto:connect@skillswap.com" className="text-blue-500 hover:underline">connect@skillswap.com</a>
           <br />
           📞 Phone: +91-9876543210

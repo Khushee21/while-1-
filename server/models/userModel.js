@@ -16,6 +16,9 @@ const userSchema = new mongoose.Schema({
     skills: {
         type: [String]
     },
+    description: {
+        type: String,
+      }
 },{timestamps: true});
 
 export default mongoose.model("User",userSchema);

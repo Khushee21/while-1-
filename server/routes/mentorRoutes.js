@@ -4,4 +4,5 @@ import {getAllMentors} from "../controllers/mentorControllers.js";
 
 routes.get("/", getAllMentors);
 
+
 export default routes;

@@ -14,6 +14,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [skillLevel, setSkillLevel] = useState("");
+  const [achievement , setAchievement]= useState("");
   const navigate = useNavigate();
 
 
@@ -35,6 +36,7 @@ function Login() {
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
+    setAchievement("");
   };
 
   const handleSubmit = async (e) => {
@@ -43,7 +45,7 @@ function Login() {
     try {
       const payload = isSignInForm
         ? { email, password }
-        : { email, password, skillLevel, skills };
+        : { email, password, skillLevel, skills, description: achievement};
 
       const endpoint = isSignInForm
         ? "http://localhost:5000/api/auth/login"
@@ -51,8 +53,13 @@ function Login() {
 
       const response = await axios.post(endpoint, payload);
 
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("loggedInUserEmail", response.data.user.email);
+
+
       alert("Success ");
-      console.log("Response:", response.data);
+     // console.log("Response:", response.data);
       navigate("/mainPage");
       localStorage.setItem("token", response.data.token);
     } catch (error) {
@@ -63,6 +70,7 @@ function Login() {
   };
 
   return (
+    <>
     <div className="relative w-full min-h-screen overflow-hidden">
       <img
         src={BG}
@@ -131,7 +139,22 @@ function Login() {
                 <option value="intermediate">Intermediate</option>
                 <option value="mentor">Mentor</option>
               </select>
-
+              {(skillLevel=="mentor" || skillLevel=="intermediate") && (
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2" htmlFor="description">
+                    Achievements / Description
+                  </label>
+                  <textarea
+                   id="description"
+                    placeholder="Describe your achievements or past experience..."
+                    className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows={4}
+                    value={achievement}
+                    onChange={(e)=> setAchievement(e.target.value)}
+                  />
+                </div>
+              )
+              }
               <label className="block text-sm font-bold text-gray-900 mb-2" htmlFor="skill">
                 Skills
               </label>
@@ -191,8 +214,10 @@ function Login() {
         one swap at a time.
       </div>
       <ReviewSlider/>
-      <LoginFooter/>
+      
     </div>
+    <LoginFooter/>
+    </>
   );
 }
 

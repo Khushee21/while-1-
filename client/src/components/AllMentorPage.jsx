@@ -24,8 +24,6 @@ const AllMentorPage = () => {
     <Header/>
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-pink-100 to-purple-100 font-poppins p-6">
       <div className="flex flex-col  lg:flex-row gap-10">
-        
-      
         <div className="lg:w-2/3 w-full">
           <h1 className="text-4xl font-bold text-center text-purple-800 mb-10">
             Available Mentors

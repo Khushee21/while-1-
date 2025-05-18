@@ -17,6 +17,19 @@ client
         -mentors
                 -mentor page (backend api)
                 -mailTo feature
+        -skill swapper
+                -can chat 
+                -connect via notifications
+        -resume builder
+                -build resume using while(1)
+        -interview prep
+                -guide 
     -footer
 
 server
+-controller
+-routes
+-models
+-utils
+server.js
+socket.js
