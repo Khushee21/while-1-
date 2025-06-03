@@ -18,13 +18,12 @@ function Header() {
 
   const navItems= [
      { label: "Home", path: "/mainPage" },
-    { label: "Roadmap", path: "/roadmap" },
    { label: "Skill Swap", path: "/skill-swap" },
    { label: "Mentors", path: "/mentors" },
    { label: "Resume Builder", path: "/resume" },
    { label: "Interview Preparation", path: "/interviewPrep" },
    { label: "Chat Section" , path: "/chat"},
-   { label: "Contact Us", path: "/contact" },
+   { label: "About the developer", path: "/contact" },
   ]
   return (
     <div className=" flex items-center justify-between px-6 h-36 shadow-md bg-white">

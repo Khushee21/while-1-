@@ -8,43 +8,43 @@ import { io } from 'socket.io-client';
 const ChatBox = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState({}); // { email: [msg1, msg2, ...] }
+  const [messages, setMessages] = useState({}); // { userEmail: [msg1, msg2, ...] }
   const [searchTerm, setSearchTerm] = useState('');
   const [users, setUsers] = useState([]);
-  const [userEmail, setUserEmail] = useState('');  
+  const [userEmail, setUserEmail] = useState(''); // logged-in user email
 
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
-  const receiverEmail = selectedUser?.email;
 
+  // Email of the person you are chatting with
+  const receiverEmail = selectedUser?.email;
+  console.log('recevier email',receiverEmail);
   useEffect(() => {
     // Initialize Socket.io connection
     socketRef.current = io('http://localhost:5000');
 
     socketRef.current.on('connect', () => {
-      console.log('Connected to socket server');
-        console.log("Socket connected:", socketRef.current.id);
-    socketRef.current.emit("register-user", userEmail); 
+      console.log('Connected to socket server', socketRef.current.id);
     });
 
-    socketRef.current.emit('send-message', {
-  senderEmail: userEmail,
-  recipientEmail: selectedUser.email,
-  message,
-  timestamp: newMessage.timestamp,
-});
+    // Get logged-in user email from localStorage
+    const emailFromStorage = localStorage.getItem('loggedInUserEmail');
+    if (emailFromStorage) {
+      setUserEmail(emailFromStorage);
+    }
+    console.log('sender email' , emailFromStorage);
 
-    useEffect(() => {
-  const emailFromStorage = localStorage.getItem('loggedInUserEmail');
-  if (emailFromStorage) {
-    setUserEmail(emailFromStorage);
-  }
-}, []);
-
-    // Listen for incoming messages
+    // Listen for private messages coming from server
     socketRef.current.on('private-message', (data) => {
       const { senderEmail, message, timestamp } = data;
-      console.log("*****************************************************************",senderEmail);
+      console.log("Received message from:", senderEmail);
+       console.log("📩 Incoming message:", {
+       from: senderEmail,
+      message,
+      timestamp,
+    });
+
+      // Add received message to the sender's message list
       setMessages((prev) => ({
         ...prev,
         [senderEmail]: [
@@ -59,16 +59,23 @@ const ChatBox = () => {
       }));
     });
 
-    // Cleanup on component unmount
+    // Cleanup socket listeners on unmount
     return () => {
       socketRef.current.off('connect');
-      socketRef.current.off('receive-message');
+      socketRef.current.off('private-message');
       socketRef.current.disconnect();
     };
   }, []);
 
   useEffect(() => {
-    // Fetch chat users from API
+    // Register logged-in user with socket server for private messaging
+    if (socketRef.current && userEmail) {
+      socketRef.current.emit("register-user", userEmail);
+    }
+  }, [userEmail]);
+
+  useEffect(() => {
+    // Fetch chat users from backend API
     const fetchChatUsers = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -76,7 +83,7 @@ const ChatBox = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        // Add a static user to the list (can be removed if not needed)
+        // Example static user, remove if unnecessary
         const staticUser = {
           _id: 'static-1',
           name: 'Static user',
@@ -96,18 +103,18 @@ const ChatBox = () => {
   }, []);
 
   useEffect(() => {
-    // Scroll chat to bottom when messages or selected user change
+    // Scroll to bottom when messages or selected user change
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+     console.log(messages);
   }, [messages, selectedUser]);
- console.log('Messages for selectedUser:', messages[selectedUser?.email]);
- 
 
-  // Filter users by search term (search by email)
+
+  // Filter users by search term (by email)
   const filteredUsers = users.filter((user) =>
     user?.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle sending message to socket and updating UI
+  // Send a message to the selected user
   const handleSendMessage = () => {
     if (message.trim() && selectedUser && socketRef.current) {
       const newMessage = {
@@ -117,11 +124,13 @@ const ChatBox = () => {
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
 
+      // Update local state with the new message under selected user's email
       setMessages((prev) => ({
         ...prev,
         [selectedUser.email]: [...(prev[selectedUser.email] || []), newMessage],
       }));
 
+      // Emit message to server with recipient email
       socketRef.current.emit('send-message', {
         recipientEmail: selectedUser.email,
         message,
@@ -132,7 +141,7 @@ const ChatBox = () => {
     }
   };
 
-  // Initialize sample messages for a new conversation
+  // Initialize sample messages for new conversation
   const initializeMessages = (userEmail) => {
     if (!messages[userEmail]) {
       const sampleMessages = [
@@ -159,16 +168,12 @@ const ChatBox = () => {
     }
   };
 
-  // When user is selected from sidebar
+  // When a user is selected from the sidebar
   const handleUserSelect = (user) => {
     setSelectedUser(user);
     initializeMessages(user.email);
   };
 
- useEffect(() => {
-  console.log('Messages for selectedUser:', messages[selectedUser?.email]);
-  console.log('Messages for receiver:', messages[receiverEmail]);
-}, [messages, selectedUser]);
 
   return (
     <>

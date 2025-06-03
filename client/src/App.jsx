@@ -10,6 +10,7 @@ import ChatBox from "./components/ChatBox";
 import InterviewPreparation from "./components/InterviewPrepration";
 import OnlineCourses from "./components/Cources";
 import ResumeBuilder from "./components/ResumeBuilder";
+import ContactUsPage from "./components/Conact";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/interviewPrep" element={<InterviewPreparation/>}/>
         <Route path="/cource" element={<OnlineCourses/>}/>
         <Route path="/resume" element={<ResumeBuilder/>} />
+        <Route path="/contact" element={<ContactUsPage/>}/>
       </Routes>
     </BrowserRouter>
   );
