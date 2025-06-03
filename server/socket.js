@@ -5,31 +5,33 @@ const userSockets = {};
 
 export function setupSocket(server) {
   const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"]
-  }
-});
+    cors: {
+      origin: "http://localhost:5173",
+      methods: ["GET", "POST"],
+    },
+  });
 
   io.on("connection", (socket) => {
-    console.log("A user connected:", socket.id);
+    //console.log("A user connected:", socket.id);
 
-    // Step 1: Register the user with their email/ID
+    // Register user email with their socket ID
     socket.on("register-user", (email) => {
       userSockets[email] = socket.id;
-      console.log(`Registered ${email} with socket ID ${socket.id}`);
+     // console.log(`Registered ${email} with socket ID ${socket.id}`);
     });
 
-    // Step 2: Send private message to recipient based on email
+    // Handle sending private messages by email
     socket.on("private-message", ({ to, from, message }) => {
       const recipientSocketId = userSockets[to];
       if (recipientSocketId) {
         io.to(recipientSocketId).emit("private-message", {
           from,
           message,
+          timestamp: Date.now(), // Optional: add timestamp here
         });
+       // console.log(`Message from ${from} sent to ${to}`);
       } else {
-        console.log(`User with email ${to} is not connected.`);
+       // console.log(`User with email ${to} is not connected.`);
       }
     });
 
@@ -39,6 +41,7 @@ export function setupSocket(server) {
       for (const email in userSockets) {
         if (userSockets[email] === socket.id) {
           delete userSockets[email];
+         // console.log(`Removed ${email} from userSockets`);
           break;
         }
       }
