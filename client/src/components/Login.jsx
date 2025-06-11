@@ -48,8 +48,8 @@ function Login() {
         : { email, password, skillLevel, skills, description: achievement};
 
       const endpoint = isSignInForm
-        ? "http://localhost:5000/api/auth/login"
-        : "http://localhost:5000/api/auth/signup";
+        ? "https://while-1.onrender.com/api/auth/login"
+        : "https://while-1.onrender.com/api/auth/signup";
 
       const response = await axios.post(endpoint, payload);
 

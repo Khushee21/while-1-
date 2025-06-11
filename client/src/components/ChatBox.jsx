@@ -21,7 +21,7 @@ const ChatBox = () => {
   console.log('recevier email',receiverEmail);
   useEffect(() => {
     // Initialize Socket.io connection
-    socketRef.current = io('http://localhost:5000');
+    socketRef.current = io('https://while-1.onrender.com');
 
     socketRef.current.on('connect', () => {
       console.log('Connected to socket server', socketRef.current.id);
@@ -79,7 +79,7 @@ const ChatBox = () => {
     const fetchChatUsers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/notifications/chat-list', {
+        const res = await axios.get('https://while-1.onrender.com/api/notifications/chat-list', {
           headers: { Authorization: `Bearer ${token}` },
         });
 

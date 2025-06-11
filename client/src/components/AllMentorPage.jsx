@@ -9,7 +9,7 @@ const AllMentorPage = () => {
   useEffect(() => {
     const fetchMentors = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/mentors");
+        const res = await axios.get("https://while-1.onrender.com/api/mentors");
         setMentors(res.data);
       } catch (error) {
         console.error("Error Fetching mentors:", error);

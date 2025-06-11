@@ -25,7 +25,7 @@ const Notifications = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:5000/api/notifications/${loggedInUserEmail}`
+          `https://while-1.onrender.com/api/notifications/${loggedInUserEmail}`
         );
         setNotifications(res.data);
         setError(null);
@@ -50,7 +50,7 @@ const Notifications = () => {
       console.log("Sender:", senderEmail);
 console.log("Receiver:", loggedInUserEmail);
 
-      await axios.put("http://localhost:5000/api/notifications/respond", {
+      await axios.put("https://while-1.onrender.com/api/notifications/respond", {
         from: senderEmail,
         to: loggedInUserEmail,
         isAccepted
@@ -58,7 +58,7 @@ console.log("Receiver:", loggedInUserEmail);
   
 
       const res = await axios.get(
-        `http://localhost:5000/api/notifications/${loggedInUserEmail}`
+        `https://while-1.onrender.com/api/notifications/${loggedInUserEmail}`
       );
       setNotifications(res.data);
    // Assuming the sender is the logged-in user
