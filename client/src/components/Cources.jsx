@@ -389,7 +389,7 @@ const OnlineCourses = () => {
                         ${course.discountedPrice ? course.discountedPrice.toFixed(2) : course.price.toFixed(2)}
                       </span>
                     </div>
-                    <button className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 hover:bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    <button className="bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 hover:bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                       Enroll Now
                     </button>
                   </div>
